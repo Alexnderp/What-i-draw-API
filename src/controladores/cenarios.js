@@ -16,7 +16,7 @@ const listarCenarios = async (req, res) => {
 
 const addCenarios = async (req, res) => {
 
-    const { nome, idade, personalidade, ocupacao, descricao } = req.body
+    const { tipo, local, epoca } = req.body
 
     try {
         const lista = await fs.readFile('./src/bancodedados/personagens.json');
@@ -37,11 +37,9 @@ const addCenarios = async (req, res) => {
 
         parseLista.push({
             numero: id(),
-            nome,
-            idade,
-            personalidade,
-            ocupacao,
-            descricao
+            tipo,
+            local,
+            epoca
         });
 
 
@@ -57,7 +55,7 @@ const addCenarios = async (req, res) => {
 
 const atualizarCenarios = async (req, res) => {
     const { numero } = req.params;
-    const { nome, idade, personalidade, ocupacao, descricao } = req.body;
+    const { tipo, local, epoca } = req.body;
 
     try {
         const lista = await fs.readFile('./src/bancodedados/cenarios.json');
@@ -65,11 +63,9 @@ const atualizarCenarios = async (req, res) => {
         const cenario = parseLista.find((p) => {
             return p.numero === Number(numero);
         });
-        cenario.nome = nome;
-        cenario.idade = idade;
-        cenario.personalidade = personalidade;
-        cenario.ocupacao = ocupacao;
-        cenario.descricao = descricao;
+        cenario.tipo = tipo;
+        cenario.local = local;
+        cenario.epoca = epoca;
 
         await fs.writeFile('./src/bancodedados/cenarios.json', JSON.stringify(parseLista));
 
