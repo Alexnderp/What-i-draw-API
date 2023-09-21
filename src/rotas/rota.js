@@ -1,11 +1,18 @@
 const express = require('express');
 const rota = express.Router();
-const {addPersonagem,listarPersonagens, atualizarPersonagem, deletarPersonagem, sortearPersonagem} = require('../controladores/personagens');
-const {listarCenarios, addCenarios, atualizarCenarios, deletarCenarios, sortearCenarios} = require('../controladores/cenarios');
-const {listarLayout, addLayout, atualizarLayout, deletarLayout, sortearLayout} = require('../controladores/layout');
 const sorteadorGeral = require('../controladores/geral');
+const swagger = require('../../swagger_output.json');
+const swaggerUi = require('swagger-ui-express');
+
+const {addPersonagem,listarPersonagens, atualizarPersonagem, deletarPersonagem, sortearPersonagem} = require('../controladores/personagens');
+
+const {listarCenarios, addCenarios, atualizarCenarios, deletarCenarios, sortearCenarios} = require('../controladores/cenarios');
+
+const {listarLayout, addLayout, atualizarLayout, deletarLayout, sortearLayout} = require('../controladores/layout');
+
 const {verificarCenario, verificarLayout, verificarPersonagem, verificarUp} = require('../intermediarios/intermediario');
 
+rota.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger));
 
 rota.get('/', sorteadorGeral);
 
