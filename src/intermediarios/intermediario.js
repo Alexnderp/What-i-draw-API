@@ -64,6 +64,8 @@ const verificarUp = (req, res, next) =>{
     if(!numero){
         return res.status(400).json({mensagem: "Favor informar o id"});
     }
+
+    next();
 }
 
 module.exports = {verificarCenario, verificarLayout, verificarPersonagem, verificarUp}
