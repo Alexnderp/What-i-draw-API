@@ -26,21 +26,8 @@ const addLayout = async (req, res) => {
         const lista = await fs.readFile('./src/bancodedados/layout.json');
         const parseLista = JSON.parse(lista);
 
-        const id = () => {
-            if (parseLista.length === 0) {
-                return 1;
-            }
-            if (parseLista.length >= 1) {
-                const novoId = parseLista.findLast((ultimo) => {
-                    return ultimo;
-                });
-
-                return novoId.numero + 1;
-            }
-        }
-
         parseLista.push({
-            numero: id(),
+            numero: parseLista.length+1,
             tipo,
             tema
         });
