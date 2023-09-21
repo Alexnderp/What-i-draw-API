@@ -6,8 +6,12 @@ const listarLayout = async (req, res) => {
     try {
         const lista = await fs.readFile('./src/bancodedados/layout.json');
         const parseLista = JSON.parse(lista);
+        
+        const layoutsValidos = parseLista.filter((p) =>{
+            return p !== null
+        });
 
-        return res.status(200).json(parseLista);
+        return res.status(200).json(layoutsValidos);
 
     } catch (error) {
         return res.status(500).json({ mensagem: "Ops!, ocorreu probleminha e em breve estaremos resolvendo" });
@@ -89,7 +93,7 @@ const deletarLayout = async (req, res) => {
             return res.status(404).json('Personagem não encontrado');
         }
         
-        parseLista.splice(layout.numero-1, 1);
+        delete parseLista[layout.numero-1];
 
         await fs.writeFile('./src/bancodedados/layout.json', JSON.stringify(parseLista));
 
@@ -106,16 +110,18 @@ const sortearLayout = async (req, res) => {
         const lista = await fs.readFile('./src/bancodedados/layout.json');
         const parseLista = JSON.parse(lista);
 
-        const sortear = () =>{
-            const sorteador = Math.floor(Math.random() * (parseLista.length));
+        const layoutsValidos = parseLista.filter((p) =>{
+            return p !== null
+        });
+
+        const sortear = () => {
+            const sorteador = Math.floor(Math.random() * (layoutsValidos.length - 1));
             return sorteador;
         }
-        
+
         const sorteador = sortear();
 
-        const layout = parseLista.find((p) => {
-            return p.numero === sorteador;
-        });
+        const layout = layoutsValidos[sorteador];
 
         return res.status(200).json(layout);
 

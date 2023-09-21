@@ -7,7 +7,11 @@ const listarCenarios = async (req, res) => {
         const lista = await fs.readFile('./src/bancodedados/cenarios.json');
         const parseLista = JSON.parse(lista);
 
-        return res.status(200).json(parseLista);
+        const cenariosValidos = parseLista.filter((p) =>{
+            return p !== null
+        });
+
+        return res.status(200).json(cenariosValidos);
 
     } catch (error) {
         return res.status(500).json({ mensagem: "Ops!, ocorreu probleminha e em breve estaremos resolvendo" });
@@ -90,7 +94,7 @@ const deletarCenarios = async (req, res) => {
             return res.status(404).json('Cenario não encontrado');
         }
         
-        parseLista.splice(cenario.numero-1, 1);
+        delete parseLista [cenario.numero-1];
 
         await fs.writeFile('./src/bancodedados/cenarios.json', JSON.stringify(parseLista));
 
@@ -107,16 +111,18 @@ const sortearCenarios = async (req, res) => {
         const lista = await fs.readFile('./src/bancodedados/cenarios.json');
         const parseLista = JSON.parse(lista);
 
-        const sortear = () =>{
-            const sorteador = Math.floor(Math.random() * (parseLista.length));
+        const cenariosValidos = parseLista.filter((p) =>{
+            return p !== null
+        });
+
+        const sortear = () => {
+            const sorteador = Math.floor(Math.random() * (cenariosValidos.length - 1));
             return sorteador;
         }
-        
+
         const sorteador = sortear();
 
-        const cenario = parseLista.find((p) => {
-            return p.numero === sorteador;
-        });
+        const cenario = cenariosValidos[sorteador];
 
         return res.status(200).json(cenario);
 
